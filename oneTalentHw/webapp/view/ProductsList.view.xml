@@ -1,0 +1,77 @@
+<mvc:View controllerName="sap.ui.demo.walkthrough.controller.ProductsList" xmlns="sap.m" xmlns:table="sap.ui.table" xmlns:mvc="sap.ui.core.mvc" displayBlock="true">
+    <Table id="productsList" class="sapUiResponsiveMargin" width="auto" alternateRowColors="true" items="{
+			path : 'products>/ProductCollection',
+			sorter : {
+				path : 'SupplierName',
+				group : false
+			}
+		}">
+        <headerToolbar>
+            <Toolbar>
+                <Title id="title" text="Products" />
+                <ToolbarSpacer />
+                <SearchField width="50%" search=".onFilterProducts">
+                    <layoutData><OverflowToolbarLayoutData maxWidth="300px" shrinkable="true" priority="NeverOverflow"/></layoutData>
+                </SearchField>
+                <Button text="Reset" type="Transparent" press="onReset" />
+                <OverflowToolbarButton tooltip="Sort" type="Transparent" text="Sort" icon="sap-icon://sort" press="onSort"/>
+                <OverflowToolbarButton tooltip="Group" type="Transparent" text="Group" icon="sap-icon://group-2" press="onGroup"/>
+            </Toolbar>
+        </headerToolbar>
+
+
+        <columns>
+            <Column hAlign="Begin" minScreenWidth="Small" demandPopin="true" sortIndicator="Ascending">
+                <Text text="{i18n>columnName}" />
+            </Column>
+            <Column hAlign="Center" width="6em">
+                <Text text="{i18n>columnQuantity}" />
+            </Column>
+            <Column hAlign="Center" minScreenWidth="Small" demandPopin="true">
+                <Text text="{i18n>columnStatus}" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="false">
+                <Text text="{i18n>columnSupplier}" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+                <Text text="Dimensions" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+                <Text text="Weight" />
+            </Column>
+            <Column hAlign="End">
+                <Text text="{i18n>columnPrice}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="Navigation" press=".onPress" vAlign="Middle">
+                <cells>
+                    <ObjectIdentifier title="{products>Name}" text="{products>ProductId}" />
+                    <ObjectNumber number="{products>Quantity}" emphasized="false" />
+                    <Text text="{
+						path: 'products>Status'
+					}" />
+                    <Text text="{products>SupplierName}" />
+                    <Text text="{products>Width}x{products>Depth}x{products>Height} {products>DimUnit}" />
+                    <ObjectNumber number="{products>WeightMeasure}" unit="{products>WeightUnit}" state="{
+							parts: [
+								{path: 'products>WeightMeasure'},
+								{path: 'products>WeightUnit'}
+							],
+							formatter: '.formatter.weightState'
+						}" />
+
+                    <ObjectNumber number="{
+							parts: [{path: 'products>Price'}, {path: 'products>CurrencyCode'}],
+							type: 'sap.ui.model.type.Currency',
+							formatOptions: {
+								showMeasure: false
+							}
+						}" unit="{products>CurrencyCode}" state="{= ${products>Price} > 1000 ? 'Error' : 'Success' }" />
+
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+
+</mvc:View>
